@@ -9,7 +9,6 @@ const path = require("path");
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static("public"));
 
 // Nodemailer transporter setup
 const transporter = nodemailer.createTransport({
@@ -20,8 +19,16 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Serve static files (like CSS, images)
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html")); // Adjust the path if needed
+  res.render('index');
 });
 
 app.post("/contact", (req, res) => {
